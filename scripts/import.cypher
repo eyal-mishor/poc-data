@@ -7,8 +7,8 @@
   file_2: 'services.csv',
   file_3: 'service_tools.csv',
   file_4: 'datastore_tools.csv',
-  file_5: 'networks.csv',
-  file_6: 'network_services.csv'
+  file_5: 'users.csv',
+  file_6: 'user_services.csv'
 };
 
 // CONSTRAINT creation
@@ -64,7 +64,7 @@ WITH row
 WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
 CALL {
   WITH row
-  CREATE (n: `Network` { `Name`: row.`Name` })
+  CREATE (n: `User` { `Name`: row.`Name` })
   SET n.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
 
@@ -94,7 +94,7 @@ LOAD CSV WITH HEADERS FROM ($file_path_root + $file_6) AS row
 WITH row 
 CALL {
   WITH row
-  MATCH (source: `Network` { `Name`: row.`Network` })
+  MATCH (source: `User` { `Name`: row.`User` })
   MATCH (target: `Service` { `Name`: row.`Service` })
   CREATE (source)-[r: `ACCESS`]->(target)
   SET r.`Name` = row.`Name`
