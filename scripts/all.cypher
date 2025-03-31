@@ -1,2 +1,3 @@
-MATCH (n)-[r]->(m)
-RETURN n, r, m
+MATCH (n)
+OPTIONAL MATCH (n)-[r]-(m)
+RETURN DISTINCT n, r, m

@@ -38,8 +38,7 @@ WITH row
 WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
 CALL {
   WITH row
-  MERGE (n: `Agent` { `Name`: row.`Name` })
-  SET n.`Name` = row.`Name`
+  CREATE (n: `Agent` { `Name`: row.`Name`, `Description`: row.`Description` })
 } IN TRANSACTIONS OF 10000 ROWS;
 
 LOAD CSV WITH HEADERS FROM ($file_path_root + $file_1) AS row
@@ -47,7 +46,7 @@ WITH row
 WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
 CALL {
   WITH row
-  MERGE (n: `Datastore` { `Name`: row.`Name` })
+  CREATE (n: `Datastore` { `Name`: row.`Name` })
   SET n.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
 
@@ -56,7 +55,7 @@ WITH row
 WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
 CALL {
   WITH row
-  MERGE (n: `Service` { `Name`: row.`Name` })
+  CREATE (n: `Service` { `Name`: row.`Name` })
   SET n.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
 
@@ -65,7 +64,7 @@ WITH row
 WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
 CALL {
   WITH row
-  MERGE (n: `Network` { `Name`: row.`Name` })
+  CREATE (n: `Network` { `Name`: row.`Name` })
   SET n.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
 
@@ -91,7 +90,7 @@ CALL {
 } IN TRANSACTIONS OF 10000 ROWS;
 
 // ACCESS RELATIONSHIP
-LOAD CSV WITH HEADERS FROM ($file_path_root + $file_3) AS row
+LOAD CSV WITH HEADERS FROM ($file_path_root + $file_6) AS row
 WITH row 
 CALL {
   WITH row

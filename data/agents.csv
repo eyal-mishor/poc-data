@@ -1,2 +1,3 @@
-Name
-FraudAgent
+Name,Description
+FraudAgent,Handle unsuspend requests from Minibank's customers
+Team Navigator,Assists employees in finding colleagues and their hierarchy within the organization using Microsoft Teams
