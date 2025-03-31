@@ -3,3 +3,5 @@ is_suspended,FraudAgent,Minibank
 suspend,FraudAgent,Minibank
 get_new_ticket,FraudAgent,Tickets
 update_ticket,FraudAgent,Tickets
+get_service_request,ITHelpdesk,ServiceNow
+create_service_request,ITHelpdesk,ServiceNow
