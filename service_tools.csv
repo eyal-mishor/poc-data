@@ -1,0 +1,5 @@
+Name, Agent, Service
+is_suspended, FraudAgent, Minibank
+suspend, FraudAgent, Minibank
+get_new_ticket, FraudAgent, Tickets
+update_ticket, FraudAgent, Tickets
