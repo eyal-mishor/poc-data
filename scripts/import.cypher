@@ -31,10 +31,6 @@ REQUIRE (n.`Name`) IS UNIQUE;
 
 // NODE load
 // ---------
-//
-// Load nodes in batches, one node label at a time. Nodes will be created using a MERGE statement to ensure a node with the same label and ID property remains unique. Pre-existing nodes found by a MERGE statement will have their other properties set to the latest values encountered in a load file.
-//
-// NOTE: Any nodes with IDs in the 'idsToSkip' list parameter will not be loaded.
 LOAD CSV WITH HEADERS FROM ($file_path_root + $file_0) AS row
 WITH row
 WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
@@ -64,16 +60,13 @@ CALL {
 
 
 // RELATIONSHIP load
-// -----------------
-//
-// Load relationships in batches, one relationship type at a time. Relationships are created using a MERGE statement, meaning only one relationship of a given type will ever be created between a pair of nodes.
 LOAD CSV WITH HEADERS FROM ($file_path_root + $file_3) AS row
 WITH row 
 CALL {
   WITH row
   MATCH (source: `Agent` { `Name`: row.`Agent` })
   MATCH (target: `Service` { `Name`: row.`Service` })
-  MERGE (source)-[r: `TOOL`]->(target)
+  CREATE (source)-[r: `TOOL`]->(target)
   SET r.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
 
@@ -83,6 +76,6 @@ CALL {
   WITH row
   MATCH (source: `Agent` { `Name`: row.`Agent` })
   MATCH (target: `Datastore` { `Name`: row.`Datastore` })
-  MERGE (source)-[r: `TOOL`]->(target)
+  CREATE (source)-[r: `TOOL`]->(target)
   SET r.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
