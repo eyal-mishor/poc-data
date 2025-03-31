@@ -1,7 +1,9 @@
 Name,Agent,Service
 is_suspended,FraudAgent,Minibank
 suspend,FraudAgent,Minibank
+list_transactions,FraudAgent,Minibank
 get_new_ticket,FraudAgent,Zendesk
 update_ticket,FraudAgent,Zendesk
 get_service_request,ITHelpdesk,ServiceNow
 create_service_request,ITHelpdesk,ServiceNow
+get_users,TeamNavigator,Office365Users

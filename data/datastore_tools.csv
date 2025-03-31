@@ -1,3 +1,0 @@
-Name,Agent,Datastore
-list_transactions,FraudAgent,Transactions
-get_users,TeamNavigator,Office365Users

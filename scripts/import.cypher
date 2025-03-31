@@ -3,10 +3,8 @@
   // https://neo4j.com/docs/operations-manual/current/configuration/file-locations/
   file_path_root: 'https://raw.githubusercontent.com/eyal-mishor/poc-data/refs/heads/main/data/', // Change this to the folder your script can access the files at.
   file_0: 'agents.csv',
-  file_1: 'datastores.csv',
   file_2: 'services.csv',
   file_3: 'service_tools.csv',
-  file_4: 'datastore_tools.csv',
   file_5: 'users.csv',
   file_6: 'user_services.csv'
 };
@@ -41,15 +39,6 @@ CALL {
   CREATE (n: `Agent` { `Name`: row.`Name`, `Description`: row.`Description` })
 } IN TRANSACTIONS OF 10000 ROWS;
 
-LOAD CSV WITH HEADERS FROM ($file_path_root + $file_1) AS row
-WITH row
-WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
-CALL {
-  WITH row
-  CREATE (n: `Datastore` { `Name`: row.`Name` })
-  SET n.`Name` = row.`Name`
-} IN TRANSACTIONS OF 10000 ROWS;
-
 LOAD CSV WITH HEADERS FROM ($file_path_root + $file_2) AS row
 WITH row
 WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
@@ -75,16 +64,6 @@ CALL {
   WITH row
   MATCH (source: `Agent` { `Name`: row.`Agent` })
   MATCH (target: `Service` { `Name`: row.`Service` })
-  CREATE (source)-[r: `TOOL`]->(target)
-  SET r.`Name` = row.`Name`
-} IN TRANSACTIONS OF 10000 ROWS;
-
-LOAD CSV WITH HEADERS FROM ($file_path_root + $file_4) AS row
-WITH row 
-CALL {
-  WITH row
-  MATCH (source: `Agent` { `Name`: row.`Agent` })
-  MATCH (target: `Datastore` { `Name`: row.`Datastore` })
   CREATE (source)-[r: `TOOL`]->(target)
   SET r.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
