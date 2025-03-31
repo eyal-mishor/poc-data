@@ -6,7 +6,9 @@
   file_1: 'datastores.csv',
   file_2: 'services.csv',
   file_3: 'service_tools.csv',
-  file_4: 'datastore_tools.csv'
+  file_4: 'datastore_tools.csv',
+  file_5: 'networks.csv',
+  file_6: 'network_services.csv'
 };
 
 // CONSTRAINT creation
@@ -58,8 +60,16 @@ CALL {
   SET n.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
 
+LOAD CSV WITH HEADERS FROM ($file_path_root + $file_5) AS row
+WITH row
+WHERE NOT row.`Name` IN $idsToSkip AND NOT row.`Name` IS NULL
+CALL {
+  WITH row
+  MERGE (n: `Network` { `Name`: row.`Name` })
+  SET n.`Name` = row.`Name`
+} IN TRANSACTIONS OF 10000 ROWS;
 
-// RELATIONSHIP load
+// TOOL RELATIONSHIP
 LOAD CSV WITH HEADERS FROM ($file_path_root + $file_3) AS row
 WITH row 
 CALL {
@@ -77,5 +87,16 @@ CALL {
   MATCH (source: `Agent` { `Name`: row.`Agent` })
   MATCH (target: `Datastore` { `Name`: row.`Datastore` })
   CREATE (source)-[r: `TOOL`]->(target)
+  SET r.`Name` = row.`Name`
+} IN TRANSACTIONS OF 10000 ROWS;
+
+// ACCESS RELATIONSHIP
+LOAD CSV WITH HEADERS FROM ($file_path_root + $file_3) AS row
+WITH row 
+CALL {
+  WITH row
+  MATCH (source: `Network` { `Name`: row.`Network` })
+  MATCH (target: `Service` { `Name`: row.`Service` })
+  CREATE (source)-[r: `ACCESS`]->(target)
   SET r.`Name` = row.`Name`
 } IN TRANSACTIONS OF 10000 ROWS;
