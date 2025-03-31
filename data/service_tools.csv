@@ -1,7 +1,7 @@
 Name,Agent,Service
 is_suspended,FraudAgent,Minibank
 suspend,FraudAgent,Minibank
-get_new_ticket,FraudAgent,Tickets
-update_ticket,FraudAgent,Tickets
+get_minibank_ticket,FraudAgent,ServiceNow
+update_minibank_ticket,FraudAgent,ServiceNow
 get_service_request,ITHelpdesk,ServiceNow
 create_service_request,ITHelpdesk,ServiceNow
